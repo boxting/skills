@@ -1,0 +1,21 @@
+{
+  "name": "boxting-skills",
+  "owner": {
+    "name": "Boxting",
+    "url": "https://github.com/boxting"
+  },
+  "metadata": {
+    "description": "Shared Claude Code skills for Boxting projects.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "boxting-brag",
+      "source": "./plugins/boxting-brag",
+      "description": "30s user-focused orientation videos (landscape + vertical) of any Boxting app, rendered with HyperFrames.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["video", "orientation", "onboarding", "promo", "hyperframes"]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "boxting-brag",
+  "description": "Create 30s user-focused orientation videos (landscape + vertical) of Boxting apps: interactive device mockup, music, SFX, no technical details.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Boxting"
+  },
+  "repository": "https://github.com/boxting/skills",
+  "keywords": ["video", "orientation", "hyperframes", "skill"]
+}
