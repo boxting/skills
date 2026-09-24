@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=__W__, height=__H__" />
+    <title>AVA Cash — Orientación</title>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/audio-bass.js"></script>
+    <style>
+      @font-face { font-family: "Lexend"; font-weight: 500; src: url(assets/fonts/lexend-500.woff2) format("woff2"); }
+      @font-face { font-family: "Lexend"; font-weight: 600; src: url(assets/fonts/lexend-600.woff2) format("woff2"); }
+      @font-face { font-family: "Lexend"; font-weight: 700; src: url(assets/fonts/lexend-700.woff2) format("woff2"); }
+      @font-face { font-family: "Lexend"; font-weight: 800; src: url(assets/fonts/lexend-800.woff2) format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 400; src: url(assets/fonts/inter-400.woff2) format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 500; src: url(assets/fonts/inter-500.woff2) format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 600; src: url(assets/fonts/inter-600.woff2) format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 700; src: url(assets/fonts/inter-700.woff2) format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-800.woff2) format("woff2"); }
+
+      :root {
+        --purple: #6a1f75;
+        --purple-deep: #4a1352;
+        --yellow: #f6d300;
+        --teal: #0e5b7a;
+        --cream: #fbe3a8;
+        --ink: #09090b;
+        --muted: #71717a;
+        --line: #e4e4e7;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--purple-deep); font-family: "Inter", sans-serif; }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        background: radial-gradient(120% 90% at 30% 20%, var(--purple) 0%, var(--purple-deep) 100%);
+        color: #fff;
+      }
+      .layer { position: absolute; inset: 0; }
+
+      /* decor blobs (from Play Store art) */
+      .blob { position: absolute; border-radius: 50%; }
+      .fmt-land .blob-a { width: 640px; height: 560px; left: 1440px; top: 640px; background: var(--cream); opacity: 0.9; border-radius: 48% 52% 40% 60%; }
+      .fmt-land .blob-b { width: 520px; height: 520px; left: -160px; top: -200px; background: #c3c98a; opacity: 0.35; border-radius: 60% 40% 55% 45%; }
+      .fmt-vert .blob-a { width: 820px; height: 700px; left: 520px; top: 1380px; background: var(--cream); opacity: 0.9; border-radius: 48% 52% 40% 60%; }
+      .fmt-vert .blob-b { width: 620px; height: 620px; left: -300px; top: 900px; background: #c3c98a; opacity: 0.35; border-radius: 60% 40% 55% 45%; }
+
+      /* ---------- hook ---------- */
+      .hook { display: flex; align-items: center; justify-content: center; }
+      .hook-inner { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 80px; }
+      .hook-logo { width: 150px; height: 150px; display: block; margin-bottom: 36px; }
+      .hook1 { font-family: "Lexend"; font-weight: 700; font-size: 104px; line-height: 1.05; letter-spacing: -2px; }
+      .hook2 { display: block; font-family: "Lexend"; font-weight: 800; font-size: 190px; line-height: 1.05; color: var(--yellow); letter-spacing: -4px; }
+      .fmt-vert .hook1 { font-size: 92px; max-width: 900px; }
+      .fmt-vert .hook2 { font-size: 200px; }
+
+      /* ---------- captions ---------- */
+      .caps { position: absolute; }
+      .fmt-land .caps { left: 150px; top: 0; bottom: 0; width: 900px; }
+      .fmt-vert .caps { left: 70px; right: 70px; top: 150px; height: 520px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+      .fmt-vert .cap { align-items: center; text-align: center; }
+      .kicker {
+        align-self: flex-start; display: block; background: var(--yellow); color: #3a0d42;
+        font-family: "Lexend"; font-weight: 700; font-size: 24px; letter-spacing: 3px;
+        padding: 10px 20px; border-radius: 999px; margin-bottom: 28px;
+      }
+      .fmt-vert .kicker { align-self: center; font-size: 28px; }
+      .title { display: block; font-family: "Lexend"; font-weight: 700; font-size: 84px; line-height: 1.05; letter-spacing: -2px; max-width: 880px; }
+      .sub { display: block; font-family: "Inter"; font-weight: 500; font-size: 34px; line-height: 1.35; color: #f3e8f5; margin-top: 26px; max-width: 760px; }
+      .fmt-vert .title { font-size: 80px; max-width: 940px; }
+      .fmt-vert .sub { font-size: 36px; max-width: 860px; }
+
+      /* ---------- phone ---------- */
+      .phone-wrap { position: absolute; width: 428px; height: 868px; }
+      .fmt-land .phone-wrap { left: 1230px; top: 106px; }
+      .fmt-vert .phone-wrap { left: 326px; top: 712px; transform: scale(1.3); transform-origin: 50% 0; }
+      .glow {
+        position: absolute; left: -260px; top: -160px; width: 948px; height: 1188px; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(246, 211, 0, 0.42), rgba(246, 211, 0, 0.12) 55%, rgba(246, 211, 0, 0) 100%);
+      }
+      .phone {
+        position: absolute; inset: 0; border-radius: 58px; background: #111;
+        box-shadow: 0 40px 90px rgba(20, 0, 30, 0.55), inset 0 0 0 2px #333;
+      }
+      .screen {
+        position: absolute; left: 14px; top: 14px; width: 400px; height: 840px; border-radius: 46px;
+        background: #fff; overflow: hidden; color: var(--ink); font-family: "Inter";
+      }
+      .status { position: absolute; left: 0; right: 0; top: 0; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 6px 30px 0; font-size: 15px; font-weight: 600; }
+      .notch { position: absolute; left: 182px; top: 12px; width: 36px; height: 36px; border-radius: 50%; background: #111; }
+      .appbar { position: absolute; left: 0; right: 0; top: 40px; height: 56px; display: flex; align-items: center; justify-content: center; }
+      .appbar img { width: 46px; height: 46px; display: block; }
+      .content { position: absolute; left: 0; right: 0; top: 96px; bottom: 80px; overflow: hidden; }
+      .scr { position: absolute; inset: 0; padding: 14px 22px; }
+
+      /* nav */
+      .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 80px; border-top: 1px solid var(--line); background: #fff; display: flex; }
+      .nav-pill { position: absolute; left: 12px; top: 10px; width: 56px; height: 30px; border-radius: 15px; background: #f1e3f3; }
+      .nav-item { position: relative; width: 80px; display: flex; flex-direction: column; align-items: center; padding-top: 13px; color: #3f3f46; }
+      .nav-item svg { width: 23px; height: 23px; display: block; }
+      .nav-item span { font-size: 11px; font-weight: 600; margin-top: 9px; }
+      .nav-item.on { color: var(--purple); }
+
+      /* home */
+      .greet { font-size: 25px; font-weight: 800; letter-spacing: -0.5px; margin: 6px 0 14px; }
+      .bal { display: flex; align-items: center; gap: 12px; }
+      .bal-num { font-size: 46px; font-weight: 800; letter-spacing: -1.5px; }
+      .bal svg { width: 24px; height: 24px; color: #3f3f46; }
+      .bal-lbl { font-size: 17px; font-weight: 600; margin-top: 2px; }
+      .act-h { font-size: 19px; font-weight: 700; margin: 30px 0 8px; }
+      .tx { display: flex; align-items: center; gap: 14px; padding: 12px 0; }
+      .tx svg { width: 36px; height: 36px; flex: none; }
+      .tx-main { flex: 1; min-width: 0; }
+      .tx-t { font-size: 14px; font-weight: 700; }
+      .tx-s { font-size: 12px; color: #3f3f46; margin-top: 3px; }
+      .tx-e { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .tx-amt { font-size: 14px; font-weight: 700; white-space: nowrap; }
+      .up { color: #1976d2; }
+      .down { color: #d32f2f; }
+
+      /* qr screen */
+      .tabs { position: relative; height: 44px; background: #f4f4f5; border-radius: 10px; display: flex; padding: 4px; }
+      .tab-pill { position: absolute; left: 4px; top: 4px; width: 174px; height: 36px; border-radius: 7px; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+      .tab { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #3f3f46; }
+      .card-slot { position: relative; margin-top: 14px; height: 520px; }
+      .card { position: absolute; left: 0; right: 0; top: 0; border: 1px solid var(--line); border-radius: 14px; padding: 20px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); }
+      .card-t { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+      .card-d { font-size: 13.5px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+      .qr-box { position: relative; width: 250px; height: 250px; margin: 22px auto 10px; }
+      .qr-box svg { width: 250px; height: 250px; display: block; }
+      .scanline { position: absolute; left: -10px; right: -10px; top: 0; height: 4px; border-radius: 2px; background: #22c55e; box-shadow: 0 0 18px 6px rgba(34, 197, 94, 0.45); opacity: 0; }
+      .link { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600; color: #1976d2; padding: 8px 0; }
+      .link svg { width: 18px; height: 18px; }
+      .pay-a { margin-top: 26px; }
+      .pay-lbl { font-size: 14px; font-weight: 600; text-align: center; }
+      .input { position: relative; height: 44px; border: 1.5px solid var(--purple); border-radius: 8px; margin-top: 12px; display: flex; align-items: center; padding: 0 14px; font-size: 18px; font-weight: 600; box-shadow: 0 0 0 3px rgba(106, 31, 117, 0.15); }
+      .caret { display: block; width: 2px; height: 22px; background: var(--ink); margin-left: 2px; }
+      .pay-desc { font-size: 13px; color: var(--muted); margin-top: 8px; }
+      .pay-btn { display: block; margin: 18px auto 0; width: 170px; }
+      .progress { position: relative; height: 6px; border-radius: 3px; background: #f1e3f3; margin-top: 16px; overflow: hidden; opacity: 0; }
+      .progress i { display: block; width: 100%; height: 100%; background: var(--purple); transform-origin: 0 50%; }
+      .pay-b { position: absolute; left: 20px; right: 20px; top: 88px; }
+      .toast {
+        position: absolute; left: 16px; right: 16px; bottom: 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px;
+        padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+      }
+      .toast-ic { width: 38px; height: 38px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; flex: none; }
+      .toast-ic svg { width: 22px; height: 22px; color: #15803d; }
+      .toast-t { font-size: 16px; font-weight: 800; }
+      .toast-s { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+      /* map */
+      .map-scr { padding: 0; }
+      .map-scr > svg { position: absolute; inset: 0; width: 400px; height: 664px; display: block; }
+      .pin { position: absolute; width: 48px; height: 58px; }
+      .pin-head { position: absolute; left: 0; top: 0; width: 48px; height: 48px; border-radius: 50%; background: #fff; border: 3px solid var(--purple); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25); }
+      .pin-logo { width: 32px; height: 32px; background: url(assets/img/logo_ava.png) center / contain no-repeat; }
+      .pin-tip { position: absolute; left: 17px; top: 42px; width: 14px; height: 14px; background: var(--purple); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+      .me { position: absolute; left: 196px; top: 226px; width: 22px; height: 22px; border-radius: 50%; background: #1976d2; border: 4px solid #fff; box-shadow: 0 0 0 12px rgba(25, 118, 210, 0.18); }
+      .sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 320px; background: #fff; border-radius: 25px 25px 0 0; box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.14); padding: 0 20px; }
+      .handle { width: 40px; height: 4px; border-radius: 4px; background: #c4c4cc; margin: 10px auto 12px; }
+      .sheet-t { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+      .st { display: flex; align-items: center; gap: 14px; padding: 11px 0; }
+      .st > svg { width: 26px; height: 26px; flex: none; }
+      .st-main { flex: 1; }
+      .st-t { font-size: 15px; font-weight: 600; }
+      .st-s { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+      .st-go { width: 40px; height: 40px; border-radius: 12px; background: #e6f0f3; color: var(--teal); display: flex; align-items: center; justify-content: center; }
+      .st-go svg { width: 20px; height: 20px; }
+
+      /* promo */
+      .promo-scr { padding: 0; }
+      .banner { position: absolute; inset: 0; background: #c2410c; overflow: hidden; }
+      .banner-dot { position: absolute; border-radius: 50%; background: #ea580c; }
+      .banner-copy { position: absolute; left: 24px; right: 24px; top: 30px; }
+      .b-h { font-family: "Lexend"; font-weight: 800; font-size: 34px; line-height: 1.05; color: #fff; letter-spacing: -0.5px; }
+      .b-s { font-size: 14px; font-weight: 600; color: #fff; margin-top: 8px; letter-spacing: 1px; }
+      .badge { position: absolute; right: 22px; top: 150px; background: var(--yellow); color: #3a0d42; border-radius: 22px; padding: 10px 20px; font-family: "Lexend"; font-weight: 800; font-size: 44px; letter-spacing: -1px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+      .hotdog { position: absolute; left: 30px; top: 250px; width: 340px; height: 200px; }
+      .b-foot { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font-family: "Lexend"; font-weight: 600; font-size: 26px; color: #fff; }
+      .dots { position: absolute; left: 0; right: 0; bottom: 28px; display: flex; justify-content: center; gap: 10px; }
+      .dots i { display: block; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
+      .dots i.on { background: var(--purple); }
+
+      /* tap indicator */
+      .tap { position: absolute; left: 0; top: 0; width: 46px; height: 46px; opacity: 0; }
+      .tap-dot { position: absolute; inset: 0; border-radius: 50%; background: rgba(40, 20, 50, 0.28); border: 2px solid rgba(255, 255, 255, 0.9); }
+      .tap-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(106, 31, 117, 0.7); }
+
+      /* outro */
+      .outro { display: flex; align-items: center; justify-content: center; }
+      .outro-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+      .outro-logo { width: 380px; height: 340px; display: block; }
+      .outro-t { display: block; font-family: "Lexend"; font-weight: 700; font-size: 84px; letter-spacing: -2px; margin-top: 36px; }
+      .fmt-vert .outro-t { font-size: 76px; }
+      .fmt-vert .outro-logo { width: 460px; height: 412px; }
+      .cta { display: block; margin-top: 34px; background: var(--yellow); color: #3a0d42; font-family: "Lexend"; font-weight: 700; font-size: 36px; padding: 18px 40px; border-radius: 999px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="fmt-__FMT__" data-composition-id="main" data-start="0" data-width="__W__" data-height="__H__" data-duration="30">
+      <div class="layer" id="decor">
+        <div class="blob blob-b" id="blobB" data-layout-allow-overflow></div>
+        <div class="blob blob-a" id="blobA" data-layout-allow-overflow></div>
+      </div>
+
+      <!-- Scene 1: hook -->
+      <section id="hook" class="clip layer hook" data-start="0" data-duration="3.2" data-track-index="1">
+        <div class="hook-inner" id="hookInner">
+          <img class="hook-logo" id="hookLogo" src="assets/img/logo_ava.png" alt="" />
+          <div class="hook1" id="hook1">Cada vez que cargas,</div>
+          <div class="hook2" id="hook2">ganas.</div>
+        </div>
+      </section>
+
+      <!-- Scenes 2-6: phone tour -->
+      <section id="stage" class="clip layer" data-start="2.6" data-duration="24.6" data-track-index="2">
+        <div class="caps">
+          <div class="cap" id="cap1">
+            <div class="kicker">INICIO</div>
+            <div class="title">Tu saldo, siempre a la vista</div>
+            <div class="sub">Mira cuánto acumulaste y cada movimiento.</div>
+          </div>
+          <div class="cap" id="cap2">
+            <div class="kicker">ACUMULA</div>
+            <div class="title">Muestra tu QR y acumula</div>
+            <div class="sub">Identifícate en caja y gana soles en cada compra.</div>
+          </div>
+          <div class="cap" id="cap3">
+            <div class="kicker">CANJEA</div>
+            <div class="title">Paga con tus Avacoins</div>
+            <div class="sub">Elige el monto, genera tu código y listo.</div>
+          </div>
+          <div class="cap" id="cap4">
+            <div class="kicker">UBÍCANOS</div>
+            <div class="title">Encuentra tu estación AVA</div>
+            <div class="sub">Todas las estaciones cerca de ti, en el mapa.</div>
+          </div>
+          <div class="cap" id="cap5">
+            <div class="kicker">PROMOCIONES</div>
+            <div class="title">Ofertas solo para ti</div>
+            <div class="sub">Combos y descuentos exclusivos, cada semana.</div>
+          </div>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="glow" id="glow"></div>
+          <div class="phone" id="phone">
+            <div class="screen" id="screen">
+              <div class="status">
+                <span>12:26</span>
+                <svg width="46" height="14" viewBox="0 0 46 14" fill="#111"><path d="M1 12h3V9H1zM6 12h3V6H6zM11 12h3V3h-3z" /><rect x="22" y="2" width="20" height="10" rx="2.5" fill="none" stroke="#111" stroke-width="1.5" /><rect x="24" y="4" width="14" height="6" rx="1" /><rect x="43" y="5" width="2" height="4" rx="1" /></svg>
+              </div>
+              <div class="notch"></div>
+              <div class="appbar"><img src="assets/img/logo_ava.png" alt="" /></div>
+
+              <div class="content" id="content">
+                <!-- HOME -->
+                <div class="scr" id="scrHome">
+                  <div class="greet">Buenas tardes, Lucía</div>
+                  <div class="bal">
+                    <span class="bal-num" id="balNum">S/.0.00</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 9 3-3 3 3" /><path d="M13 18H7a2 2 0 0 1-2-2V6" /><path d="m22 15-3 3-3-3" /><path d="M11 6h6a2 2 0 0 1 2 2v10" /></svg>
+                  </div>
+                  <div class="bal-lbl">Soles acumulados</div>
+                  <div class="act-h">Actividad</div>
+                  <div class="tx" id="tx1">
+                    <svg class="up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 18v-6H5l7-7 7 7h-4v6H9z" /></svg>
+                    <div class="tx-main"><div class="tx-t">Ganaste en AVA Surco</div><div class="tx-s">Total: S/.160.00</div><div class="tx-e">Expira: 24/09/2027</div></div>
+                    <div class="tx-amt up">+ S/ 3.20</div>
+                  </div>
+                  <div class="tx" id="tx2">
+                    <svg class="down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M15 6v6h4l-7 7-7-7h4V6h6z" /></svg>
+                    <div class="tx-main"><div class="tx-t">Canjeaste en AVA Point</div><div class="tx-s">Total: S/.9.90</div></div>
+                    <div class="tx-amt down">- S/ 9.90</div>
+                  </div>
+                  <div class="tx" id="tx3">
+                    <svg class="up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 18v-6H5l7-7 7 7h-4v6H9z" /></svg>
+                    <div class="tx-main"><div class="tx-t">Ganaste en AVA La Molina</div><div class="tx-s">Total: S/.137.50</div><div class="tx-e">Expira: 18/09/2027</div></div>
+                    <div class="tx-amt up">+ S/ 2.75</div>
+                  </div>
+                </div>
+
+                <!-- QR (Acumular / Canjear) -->
+                <div class="scr" id="scrQr">
+                  <div class="tabs">
+                    <div class="tab-pill" id="tabPill"></div>
+                    <div class="tab">Acumular</div>
+                    <div class="tab" id="tabCanjear">Canjear</div>
+                  </div>
+                  <div class="card-slot">
+                    <div class="card" id="cardAcc">
+                      <div class="card-t">Muestra el código!</div>
+                      <div class="card-d">Identifícate en nuestros puntos de venta para poder agilizar tu compra.</div>
+                      <div class="qr-box" id="qrAccBox"><svg id="qrAcc" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><div class="scanline" id="scanline"></div></div>
+                      <div class="link">Refrescar código <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 9 3-3 3 3" /><path d="M13 18H7a2 2 0 0 1-2-2V6" /><path d="m22 15-3 3-3-3" /><path d="M11 6h6a2 2 0 0 1 2 2v10" /></svg></div>
+                    </div>
+                    <div class="card" id="cardPay">
+                      <div class="card-t">Paga con Avacoins</div>
+                      <div class="card-d">Utiliza Avacoins para pagar en tu siguiente compra</div>
+                      <div class="pay-a" id="payA">
+                        <div class="pay-lbl">Ingresa el monto a canjear</div>
+                        <div class="input" id="payInput"><span id="payText"></span><span class="caret" id="caret"></span></div>
+                        <div class="pay-desc">Soles disponibles: S/.48.60</div>
+                        <div class="link pay-btn" id="payBtn">Generar código</div>
+                        <div class="progress" id="progress"><i id="progressBar"></i></div>
+                      </div>
+                      <div class="pay-b" id="payB">
+                        <div class="qr-box"><svg id="qrPay" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg></div>
+                        <div class="link">Generar otro código</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="toast" id="toast">
+                    <div class="toast-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
+                    <div><div class="toast-t">¡Ganaste S/ 3.50!</div><div class="toast-s">Compra en AVA Surco · ya está en tu saldo</div></div>
+                  </div>
+                </div>
+
+                <!-- MAP -->
+                <div class="scr map-scr" id="scrMap">
+                  <svg viewBox="0 0 400 664">
+                    <rect width="400" height="664" fill="#eceff1" />
+                    <path d="M0 0H70C58 120 84 220 62 330C44 430 70 540 52 664H0Z" fill="#b8dbef" />
+                    <rect x="250" y="60" width="110" height="80" rx="18" fill="#cfe8c9" />
+                    <rect x="110" y="330" width="90" height="70" rx="16" fill="#cfe8c9" />
+                    <g stroke="#fff" stroke-linecap="round" fill="none">
+                      <path d="M80 40L400 260" stroke-width="14" />
+                      <path d="M150 0L230 664" stroke-width="14" />
+                      <path d="M70 460L400 420" stroke-width="12" />
+                      <path d="M90 170H400M90 560H400M320 0V664M110 0V664" stroke-width="6" />
+                    </g>
+                  </svg>
+                  <div class="me"></div>
+                  <div class="pin" id="pin1" style="left: 262px; top: 150px"><div class="pin-tip"></div><div class="pin-head"><div class="pin-logo"></div></div></div>
+                  <div class="pin" id="pin2" style="left: 108px; top: 196px"><div class="pin-tip"></div><div class="pin-head"><div class="pin-logo"></div></div></div>
+                  <div class="pin" id="pin3" style="left: 232px; top: 264px"><div class="pin-tip"></div><div class="pin-head"><div class="pin-logo"></div></div></div>
+                  <div class="sheet" id="sheet">
+                    <div class="handle"></div>
+                    <div class="sheet-t">Estaciones de servicio</div>
+                    <div class="st">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="15" y1="22" y2="22" /><line x1="4" x2="14" y1="9" y2="9" /><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18" /><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5" /></svg>
+                      <div class="st-main"><div class="st-t">AVA Surco</div><div class="st-s">Av. Primavera 1450, Surco</div></div>
+                      <div class="st-go"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5-3.5 3.5z" /></svg></div>
+                    </div>
+                    <div class="st">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="15" y1="22" y2="22" /><line x1="4" x2="14" y1="9" y2="9" /><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18" /><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5" /></svg>
+                      <div class="st-main"><div class="st-t">AVA La Molina</div><div class="st-s">Av. La Fontana 820, La Molina</div></div>
+                      <div class="st-go"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5-3.5 3.5z" /></svg></div>
+                    </div>
+                    <div class="st">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="15" y1="22" y2="22" /><line x1="4" x2="14" y1="9" y2="9" /><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18" /><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5" /></svg>
+                      <div class="st-main"><div class="st-t">AVA San Borja</div><div class="st-s">Av. Aviación 2980, San Borja</div></div>
+                      <div class="st-go"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5-3.5 3.5z" /></svg></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PROMOS -->
+                <div class="scr promo-scr" id="scrPromo">
+                  <div class="banner" id="banner" data-layout-allow-overflow>
+                    <div class="banner-dot" style="width: 300px; height: 300px; left: 210px; top: -90px"></div>
+                    <div class="banner-dot" style="width: 220px; height: 220px; left: -80px; top: 400px"></div>
+                    <div class="banner-copy">
+                      <div class="b-h">FRANKFURTER + GASEOSA</div>
+                      <div class="b-s">300 ML SIN AZÚCAR</div>
+                    </div>
+                    <div class="badge" id="badge">S/ 9.90</div>
+                    <svg class="hotdog" viewBox="0 0 340 200">
+                      <ellipse cx="170" cy="170" rx="150" ry="22" fill="#7c2d12" opacity="0.35" />
+                      <path d="M40 110h260a30 30 0 0 1 0 60H40a30 30 0 0 1 0-60z" fill="#f4c27a" />
+                      <rect x="6" y="84" width="328" height="46" rx="23" fill="#9f2d1a" />
+                      <rect x="16" y="90" width="300" height="10" rx="5" fill="#c2412a" />
+                      <path d="M30 104c18-14 36 14 54 0s36 14 54 0 36 14 54 0 36 14 54 0 36 14 54 0" stroke="#f6d300" stroke-width="8" fill="none" stroke-linecap="round" />
+                      <path d="M28 124h284a26 26 0 0 1-26 30H54a26 26 0 0 1-26-30z" fill="#e8a95a" />
+                    </svg>
+                    <div class="b-foot">Sabor único en cada bocado</div>
+                    <div class="dots"><i class="on"></i><i></i><i></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nav" id="nav">
+                <div class="nav-pill" id="navPill"></div>
+                <div class="nav-item on" id="nav0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg><span>Inicio</span></div>
+                <div class="nav-item" id="nav1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1" /><rect width="5" height="5" x="16" y="3" rx="1" /><rect width="5" height="5" x="3" y="16" rx="1" /><path d="M21 16h-3a2 2 0 0 0-2 2v3" /><path d="M21 21v.01" /><path d="M12 7v3a2 2 0 0 1-2 2H7" /><path d="M3 12h.01" /><path d="M12 3h.01" /><path d="M12 16v.01" /><path d="M16 12h1" /><path d="M21 12v.01" /><path d="M12 21v-1" /></svg><span>Escanear</span></div>
+                <div class="nav-item" id="nav2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /><path d="M15 5.764v15" /><path d="M9 3.236v15" /></svg><span>Ubícanos</span></div>
+                <div class="nav-item" id="nav3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" /><path d="M13 5v2" /><path d="M13 17v2" /><path d="M13 11v2" /></svg><span>Promociones</span></div>
+                <div class="nav-item" id="nav4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg><span>Ajustes</span></div>
+              </div>
+
+              <div class="tap" id="tap"><div class="tap-ring" id="tapRing"></div><div class="tap-dot" id="tapDot"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 7: outro -->
+      <section id="outro" class="clip layer outro" data-start="26.8" data-duration="3.2" data-track-index="3">
+        <div class="outro-inner">
+          <img class="outro-logo" id="outroLogo" src="assets/img/logo_ava_cash.png" alt="" />
+          <div class="outro-t" id="outroT">Carga. Acumula. Canjea.</div>
+          <div class="cta" id="outroCta">Descarga AVA Cash</div>
+        </div>
+      </section>
+
+      <!-- audio -->
+      <audio id="music" data-start="0" data-duration="30" data-track-index="10" data-volume="0.35" src="assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.4,"v":1},{"t":28.4,"v":1},{"t":30,"v":0}]}]}'></audio>
+      __SFX__
+    </div>
+
+    <script>
+      document.fonts.ready.then(function () {
+        var tl = gsap.timeline({ paused: true });
+        var $ = function (s) { return document.querySelector(s); };
+
+        /* ---- seeded QR-like pattern (fictional payload) ---- */
+        function mulberry32(a) {
+          return function () {
+            a |= 0; a = (a + 0x6d2b79f5) | 0;
+            var t = Math.imul(a ^ (a >>> 15), 1 | a);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+        function drawQR(svg, seed) {
+          var n = 29, rnd = mulberry32(seed), out = "";
+          function finder(x, y) {
+            out += '<rect x="' + x + '" y="' + y + '" width="7" height="7" fill="#000"/>';
+            out += '<rect x="' + (x + 1) + '" y="' + (y + 1) + '" width="5" height="5" fill="#fff"/>';
+            out += '<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="3" height="3" fill="#000"/>';
+          }
+          function reserved(x, y) {
+            return (x < 8 && y < 8) || (x > n - 9 && y < 8) || (x < 8 && y > n - 9);
+          }
+          out += '<rect width="29" height="29" fill="#fff"/>';
+          for (var y = 0; y < n; y++) {
+            for (var x = 0; x < n; x++) {
+              if (reserved(x, y)) continue;
+              var on = y === 6 || x === 6 ? (x + y) % 2 === 0 : rnd() > 0.52;
+              if (on) out += '<rect x="' + x + '" y="' + y + '" width="1.02" height="1.02" fill="#000"/>';
+            }
+          }
+          finder(0, 0); finder(n - 7, 0); finder(0, n - 7);
+          svg.innerHTML = out;
+        }
+        drawQR($("#qrAcc"), 2718);
+        drawQR($("#qrPay"), 31415);
+
+        /* ---- geometry helpers (layout offsets, transform-independent) ---- */
+        var screenEl = $("#screen");
+        function centerIn(el) {
+          var x = el.offsetWidth / 2, y = el.offsetHeight / 2, e = el;
+          while (e && e !== screenEl) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+          return { x: x, y: y };
+        }
+        function tapAt(el, t) {
+          var c = centerIn(el);
+          tl.set("#tap", { x: c.x - 23, y: c.y - 23 }, t);
+          tl.fromTo("#tap", { opacity: 0 }, { opacity: 1, duration: 0.12, immediateRender: false }, t);
+          tl.fromTo("#tapDot", { scale: 1.25 }, { scale: 0.85, duration: 0.14, ease: "power2.out", immediateRender: false }, t + 0.1);
+          tl.fromTo("#tapRing", { scale: 0.8, opacity: 0.9 }, { scale: 2.1, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, t + 0.14);
+          tl.to("#tap", { opacity: 0, duration: 0.2 }, t + 0.42);
+        }
+        function navTo(i, t) {
+          tl.to("#navPill", { x: i * 80, duration: 0.35, ease: "power3.inOut" }, t);
+          for (var k = 0; k < 5; k++) {
+            tl.to("#nav" + k, { color: k === i ? "#6a1f75" : "#3f3f46", duration: 0.2 }, t + 0.05);
+          }
+        }
+        function swapScreen(from, to, t) {
+          tl.to(from, { opacity: 0, x: -40, duration: 0.3, ease: "power2.in" }, t);
+          tl.fromTo(to, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.38, ease: "power3.out", immediateRender: false }, t + 0.2);
+        }
+        function capIn(id, t) {
+          var kids = document.querySelectorAll(id + " > *");
+          tl.fromTo(kids, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.1 }, t);
+        }
+        function capOut(id, t) {
+          tl.to(document.querySelectorAll(id + " > *"), { opacity: 0, y: -24, duration: 0.3, ease: "power2.in", stagger: 0.04 }, t);
+        }
+
+        /* ---- initial states ---- */
+        gsap.set(["#scrQr", "#scrMap", "#scrPromo", "#cardPay", "#payB", "#toast"], { opacity: 0 });
+
+        /* ---- Scene 1: hook (0-3) ---- */
+        tl.fromTo("#hookLogo", { scale: 0.5, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(2)" }, 0.1);
+        tl.fromTo("#hook1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.3);
+        tl.fromTo("#hook2", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(1.6)" }, 1.0); // beat-grid: 1.02
+        tl.to("#hookInner", { opacity: 0, y: -80, duration: 0.4, ease: "power2.in" }, 2.6);
+
+        /* ---- phone enters ---- */
+        tl.fromTo("#phone", { y: 1100, rotation: 6 }, { y: 0, rotation: 0, duration: 0.85, ease: "power3.out" }, 2.65);
+        tl.fromTo("#glow", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 2.9);
+
+        /* ---- Scene 2: Inicio (3-9) ---- */
+        capIn("#cap1", 3.3);
+        var bal = { v: 0 };
+        tl.to(bal, { v: 48.6, duration: 1.2, ease: "power2.out", onUpdate: function () { $("#balNum").textContent = "S/." + bal.v.toFixed(2); } }, 3.6);
+        // beat-grid: rows at 5.03, 5.53, 6.03 (short rows, held on screen until 8.5)
+        ["#tx1", "#tx2", "#tx3"].forEach(function (s, i) {
+          tl.fromTo(s, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.35, ease: "power3.out" }, 5.03 + i * 0.5);
+        });
+        tapAt($("#nav1"), 8.2);
+        navTo(1, 8.35);
+        swapScreen("#scrHome", "#scrQr", 8.45);
+        capOut("#cap1", 8.55);
+
+        /* ---- Scene 3: Acumula (9-15) ---- */
+        capIn("#cap2", 9.0);
+        tl.fromTo("#qrAcc", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "power2.inOut" }, 9.3);
+        tl.set("#scanline", { opacity: 1 }, 10.9);
+        tl.fromTo("#scanline", { y: 0 }, { y: 246, duration: 0.9, ease: "sine.inOut", immediateRender: false }, 10.95);
+        tl.to("#scanline", { opacity: 0, duration: 0.15 }, 11.85);
+        tl.fromTo("#toast", { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.7)", immediateRender: false }, 12.02); // beat-grid: 12.02
+        tl.fromTo("#qrAccBox", { scale: 1 }, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, 12.02);
+        tl.to("#toast", { opacity: 0, y: 90, duration: 0.35, ease: "power2.in" }, 14.0);
+        tapAt($("#tabCanjear"), 14.35);
+        tl.to("#tabPill", { x: 174, duration: 0.35, ease: "power3.inOut" }, 14.5);
+        tl.to("#cardAcc", { opacity: 0, x: -30, duration: 0.25 }, 14.5);
+        tl.fromTo("#cardPay", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, 14.65);
+        capOut("#cap2", 14.6);
+
+        /* ---- Scene 4: Canjea (15-20) ---- */
+        capIn("#cap3", 15.0);
+        tapAt($("#payInput"), 15.2);
+        tl.fromTo("#caret", { opacity: 0 }, { opacity: 1, duration: 0.05, immediateRender: false }, 15.3);
+        var typed = { n: 0 }, amount = "15.00";
+        tl.to(typed, { n: 5, duration: 0.8, ease: "none", onUpdate: function () { $("#payText").textContent = amount.slice(0, Math.floor(typed.n + 0.0001)); } }, 15.55);
+        tapAt($("#payBtn"), 16.75);
+        tl.to("#caret", { opacity: 0, duration: 0.05 }, 16.8);
+        tl.to("#progress", { opacity: 1, duration: 0.1 }, 16.95);
+        tl.fromTo("#progressBar", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power1.inOut" }, 16.95);
+        tl.to("#payA", { opacity: 0, y: -10, duration: 0.2 }, 17.4);
+        // beat-locked: 17.52 (strong cue) — payment QR lands
+        tl.fromTo("#payB", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)", immediateRender: false }, 17.52);
+        tapAt($("#nav2"), 19.2);
+        navTo(2, 19.35);
+        swapScreen("#scrQr", "#scrMap", 19.45);
+        capOut("#cap3", 19.55);
+
+        /* ---- Scene 5: Ubícanos (20-24) ---- */
+        capIn("#cap4", 20.0);
+        // beat-grid: pins at 20.02, 20.52, 21.02
+        ["#pin1", "#pin2", "#pin3"].forEach(function (s, i) {
+          tl.fromTo(s, { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 0.45, ease: "bounce.out" }, 20.02 + i * 0.5);
+        });
+        tl.fromTo("#sheet", { y: 330 }, { y: 0, duration: 0.5, ease: "power3.out" }, 21.5);
+        tapAt($("#nav3"), 23.2);
+        navTo(3, 23.35);
+        swapScreen("#scrMap", "#scrPromo", 23.45);
+        capOut("#cap4", 23.55);
+
+        /* ---- Scene 6: Promociones (24-27) ---- */
+        capIn("#cap5", 24.0);
+        tl.fromTo("#badge", { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.5, ease: "back.out(2.2)" }, 24.52);
+        capOut("#cap5", 26.4);
+        tl.to("#phone", { y: -60, scale: 0.9, opacity: 0, duration: 0.45, ease: "power2.in" }, 26.5);
+        tl.to("#glow", { opacity: 0, duration: 0.4 }, 26.5);
+
+        /* ---- Scene 7: outro (27-30) ---- */
+        tl.fromTo("#outroLogo", { opacity: 0, scale: 0.5, rotation: -10 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.9)" }, 27.02); // beat-grid: 27.02
+        tl.fromTo("#outroT", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 27.5);
+        tl.fromTo("#outroCta", { opacity: 0, y: 20, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, 28.0);
+
+        /* ---- decor drift ---- */
+        tl.fromTo("#blobA", { x: 0, y: 0, rotation: 0 }, { x: -40, y: -30, rotation: 8, duration: 30, ease: "sine.inOut" }, 0);
+        tl.fromTo("#blobB", { x: 0, y: 0 }, { x: 50, y: 40, duration: 30, ease: "sine.inOut" }, 0);
+
+        /* ---- audio-reactive: bass breathes the phone glow ---- */
+        var BASS = window.AVA_BASS || [];
+        var glowEl = $("#glow");
+        for (var f = 0; f < BASS.length; f++) {
+          tl.call((function (b) { return function () { gsap.set(glowEl, { scale: 0.94 + b * 0.1 }); }; })(BASS[f]), [], f / 30);
+        }
+
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>
